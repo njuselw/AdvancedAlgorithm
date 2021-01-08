@@ -56,14 +56,16 @@ public class Problem0107 {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int T = scanner.nextInt();
-        for (int i = 0; i < T; i++) {
-            int n = scanner.nextInt();
-            int[] nums = new int[n];
-            for (int j = 0; j < n; j++) {
-                nums[j] = scanner.nextInt();
+        while (scanner.hasNext()) {
+            int T = scanner.nextInt();
+            for (int i = 0; i < T; i++) {
+                int n = scanner.nextInt();
+                int[] nums = new int[n];
+                for (int j = 0; j < n; j++) {
+                    nums[j] = scanner.nextInt();
+                }
+                levelOrder(nums);
             }
-            levelOrder(nums);
         }
     }
 }
