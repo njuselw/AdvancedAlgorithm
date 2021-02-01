@@ -2,9 +2,9 @@ package FirstExercise;
 
 import java.util.*;
 
-class Point {
-    private String x;
-    private String y;
+class Point implements Comparable<Point>{
+    private final String x;
+    private final String y;
 
     public Point() {
         this.x = "0";
@@ -26,6 +26,22 @@ class Point {
 
     public String toString() {
         return this.x + " " + this.y;
+    }
+
+    @Override
+    public int compareTo(Point o) {
+        if (this.getX() < o.getX()) {
+            return -1;
+        } else if (this.getX() > o.getX()) {
+            return 1;
+        } else {
+            if (this.getY() < o.getY()) {
+                return -1;
+            } else if (this.getY() > o.getY()) {
+                return 1;
+            }
+        }
+        return 0;
     }
 }
 

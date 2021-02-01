@@ -1,6 +1,6 @@
 package FirstExercise;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Problem0109 {
     /*
@@ -20,13 +20,24 @@ public class Problem0109 {
     For each test case in a new line print the points x and y of the convex hull separated by a space in sorted order
     (increasing by x) where every pair is separated from the other by a ','. If no convex hull is possible print -1.
      */
+    public static List<Point> getConvexHull(Point[] points) {
+        List<Point> res = new ArrayList<>();
+
+        return res;
+    }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int T = scanner.nextInt();
+        int T = Integer.parseInt(scanner.nextLine());
         for (int i = 0; i < T; i++) {
-            int N = scanner.nextInt();
-
+            int N = Integer.parseInt(scanner.nextLine());
+            String[] points_str = scanner.nextLine().split(" ");
+            Point[] points = new Point[N];
+            for (int j = 0; j < N; j++) {
+                points[j] = new Point(points_str[2 * j], points_str[2 * j + 1]);
+            }
+            Arrays.sort(points);
         }
+
     }
 }
