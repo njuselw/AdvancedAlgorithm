@@ -21,44 +21,38 @@ public class Problem0105 {
     For each test case, the output is an integer displaying the minimum time for painting that house.
      */
 
-    /**
-     * 问题转化：将n个元素的数组，划分为k个连续子数组，使得这些子数组的最大和最小
-     * @param nums 画板数组，记录每个画板的大小
-     * @param n 画板数量
-     * @param k 画家数量
-     * @return 获取划分后所有子数组之和的最大值的最小
-     */
-    public static int partition(int[] nums, int n, int k) {
-        if (n == 1) { //一个画板，直接返回该画板大小
-            return nums[0];
+    //30 50 的测试用例可能会超时，修改
+    //二分吧，递归会超时，同第十题思路
+    public static int partition(int[] boards, int n, int k) {
+        int max = Integer.MIN_VALUE;
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            max = Math.max(max, boards[i]);
+            sum += boards[i];
         }
-        if (k == 1) { //一个画家，返回n个画板大小之和
-            return getSum(nums, 0, n - 1);
+        int left = max, right = sum;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (getPainters(boards, mid) > k) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
         }
-        int minTime = Integer.MAX_VALUE;
-        //递归解决该问题
-        //每次将数组的左边i个元素作为下一次划分给k-1个画家的新数组，而i~n-1部分的元素则分配给第k个画家进行处理
-        //例：n = 4, k = 2, nums = {10, 20, 30, 40}
-        //第一次划分，{10} <- 下一次划分给k-1个画家，   {20, 30, 40} <- 划分给当前第k个画家
-        for (int i = 1; i <= n; i++) {
-            minTime = Math.min(minTime, Math.max(partition(nums, i, k - 1), getSum(nums, i, n - 1)));
-        }
-        return minTime;
+        return left;
     }
 
-    /**
-     *
-     * @param nums 整个数组
-     * @param start 起始位置
-     * @param end 结束位置
-     * @return 求连续子序列所有元素之和
-     */
-    public static int getSum(int[] nums, int start, int end) {
-        int sum = 0;
-        for (int i = start; i <= end; i++) {
-            sum += nums[i];
+    public static int getPainters(int[] boards, int cnt) {
+        int temp = 0;
+        int painters = 1;
+        for (int i = 0; i < boards.length; i++) {
+            temp += boards[i];
+            if (temp > cnt) {
+                temp = boards[i];
+                painters++;
+            }
         }
-        return sum;
+        return painters;
     }
 
     public static void main(String[] args) {
