@@ -16,12 +16,12 @@ class Point implements Comparable<Point>{
         this.y = y;
     }
 
-    public double getX() {
-        return Double.parseDouble(x);
+    public int getX() {
+        return Integer.parseInt(x);
     }
 
-    public double getY() {
-        return Double.parseDouble(y);
+    public int getY() {
+        return Integer.parseInt(y);
     }
 
     public String toString() {
