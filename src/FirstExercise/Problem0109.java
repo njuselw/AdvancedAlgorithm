@@ -26,9 +26,13 @@ public class Problem0109 {
         for (int i = 0; i < points.length; i++) {
             indexes.add(i);
         }
-        List<Integer> upper = upperHull(points, indexes);
-        List<Integer> lower = lowerHull(points, indexes);
+        List<Integer> upper = hull(points, indexes, true);
+        List<Integer> lower = hull(points, indexes, false);
         //合并结果
+        //若所有点处于同一条线上，则上下包返回的均为所有点索引列表
+        if (upper.size() == lower.size() && upper.containsAll(lower)) {
+            return res;
+        }
         List<Integer> resIndex = new ArrayList<>();
         resIndex.add(indexes.get(0));
         resIndex.add(indexes.get(indexes.size() - 1));
@@ -41,90 +45,74 @@ public class Problem0109 {
         return res;
     }
 
-    //上包计算
-    public static List<Integer> upperHull(Point[] points, List<Integer> indexes) {
-        int maxDis = 0;
-        int maxIndex = -1;
+    /**
+     *
+     * @param points 所有点的数组
+     * @param indexes 当前需要处理的点的索引列表
+     * @param dir 上包还是下包
+     * @return 返回对应的顶点列表
+     */
+    public static List<Integer> hull(Point[] points, List<Integer> indexes, boolean dir) {
+        int pDis = 0; //上包记录最大值，下包记录最小值
+        int pIndex = -1;
         int size = indexes.size();
         Point p1 = points[indexes.get(0)];
         Point p2 = points[indexes.get(size - 1)];
-        //记录属于上包的点的索引
-        List<Integer> upperIndexes = new ArrayList<>();
-        for (int i = 1; i < size - 1; i++) { //两个顶点不需要计算
+        List<Integer> upOrLowList = new ArrayList<>();//记录上包或下包的点索引
+        List<Integer> onList = new ArrayList<>();//记录再p1p2线上的点
+        for (int i = 1; i < size - 1; i++) {
             int dis = getDistance(p1, p2, points[indexes.get(i)]);
-            if (dis > 0) {
-                upperIndexes.add(i);
-                if (dis > maxDis) {
-                    maxDis = dis;
-                    maxIndex = indexes.get(i);
+            if (dis == 0) {
+                onList.add(indexes.get(i));
+            }
+            if (dir) { //上包
+                if (dis > 0) {
+                    upOrLowList.add(indexes.get(i));
+                    if (dis > pDis) {
+                        pDis = dis;
+                        pIndex = indexes.get(i);
+                    }
+                }
+            } else {
+                if (dis < 0) {
+                    upOrLowList.add(indexes.get(i));
+                    if (dis < pDis) {
+                        pDis = dis;
+                        pIndex = indexes.get(i);
+                    }
                 }
             }
         }
-        if (maxIndex == -1) { //不存在上包点，返回空
-            return new ArrayList<>();
-        }
-
-        //对上包再进行划分，分成p1->pmax, pmax->p2两部分
-        List<Integer> divide1 = new ArrayList<>();
-        List<Integer> divide2 = new ArrayList<>();
-        divide1.add(indexes.get(0));
-        divide2.add(maxIndex);
-        for (int i = 0; i < upperIndexes.size(); i++) {
-            divide1.add(upperIndexes.get(i));
-            divide2.add(upperIndexes.get(i));
-        }
-        divide1.add(maxIndex);
-        divide2.add(indexes.get(size - 1));
-
-        List<Integer> res1 = upperHull(points, divide1);
-        List<Integer> res2 = upperHull(points, divide2);
-        res1.add(maxIndex);
-        res1.addAll(res2);
-        return res1;
-    }
-
-    //下包计算
-    public static List<Integer> lowerHull(Point[] points, List<Integer> indexes) {
-        int minDis = 0;
-        int minIndex = -1;
-        int size = indexes.size();
-        Point p1 = points[indexes.get(0)];
-        Point p2 = points[indexes.get(size - 1)];
-        //记录属于下包的点的索引
-        List<Integer> lowerIndexes = new ArrayList<>();
-        for (int i = 1; i < size - 1; i++) { //两个顶点不需要计算
-            int dis = getDistance(p1, p2, points[indexes.get(i)]);
-            if (dis < 0) {
-                lowerIndexes.add(i);
-                if (dis < minDis) {
-                    minDis = dis;
-                    minIndex = indexes.get(i);
+        if (pIndex == -1) {// 未找到上包或下包点，返回线上的点集
+            int start = indexes.get(0);
+            int end = indexes.get(size - 1);
+            List<Integer> res = new ArrayList<>();
+            for (int i = 0; i < onList.size(); i++) {
+                int index = onList.get(i);
+                if (index != start && index != end) {
+                    res.add(index);
                 }
             }
-        }
-        if (minIndex == -1) { //不存在上包点，返回空
-            return new ArrayList<>();
+            return res;
         }
 
-        //对上包再进行划分，分成p1->pmin, pmin->p2两部分
+        //对上包或下包进行划分，分成p1->pmax, pmax->p2两部分
         List<Integer> divide1 = new ArrayList<>();
         List<Integer> divide2 = new ArrayList<>();
         divide1.add(indexes.get(0));
-        divide2.add(minIndex);
-        for (int i = 0; i < lowerIndexes.size(); i++) {
-            divide1.add(lowerIndexes.get(i));
-            divide2.add(lowerIndexes.get(i));
-        }
-        divide1.add(minIndex);
+        divide2.add(pIndex);
+        divide1.addAll(upOrLowList);
+        divide2.addAll(upOrLowList);
+        divide1.add(pIndex);
         divide2.add(indexes.get(size - 1));
 
-        List<Integer> res1 = lowerHull(points, divide1);
-        List<Integer> res2 = lowerHull(points, divide2);
-        res1.add(minIndex);
+        //合并结果
+        List<Integer> res1 = hull(points, divide1, dir);
+        List<Integer> res2 = hull(points, divide2, dir);
+        res1.add(pIndex);
         res1.addAll(res2);
         return res1;
     }
-
 
     //计算行列式
     //  |x1 y1 1|                                             >0 p3在p1p2左侧
@@ -154,9 +142,13 @@ public class Problem0109 {
             if (convexHull.size() <= 2) {
                 System.out.println(-1);
             } else {
-                System.out.println(convexHull);
+                for (int j = 0; j < convexHull.size() - 1; j++) {
+                    System.out.print(convexHull.get(j) + ", ");
+                }
+                System.out.println(convexHull.get(convexHull.size() - 1));
             }
         }
+
 
     }
 }
