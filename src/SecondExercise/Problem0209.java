@@ -1,5 +1,7 @@
 package SecondExercise;
 
+import java.util.Scanner;
+
 public class Problem0209 {
     /*
     漆狗屋
@@ -18,4 +20,52 @@ public class Problem0209 {
     Output
     For each test case, the output is an integer displaying the minimum time for painting that house.
      */
+
+    public static int partition(int[] boards, int n, int k) {
+        int max = Integer.MIN_VALUE;
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            max = Math.max(max, boards[i]);
+            sum += boards[i];
+        }
+        int left = max, right = sum;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (getPainters(boards, mid) > k) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        return left;
+    }
+
+    public static int getPainters(int[] boards, int cnt) {
+        int temp = 0;
+        int painters = 1;
+        for (int i = 0; i < boards.length; i++) {
+            temp += boards[i];
+            if (temp > cnt) {
+                temp = boards[i];
+                painters++;
+            }
+        }
+        return painters;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNext()) {
+            int T = scanner.nextInt();
+            for (int i = 0; i < T; i++) {
+                int k = scanner.nextInt();
+                int n = scanner.nextInt();
+                int[] boards = new int[n];
+                for (int j = 0; j < n; j++) {
+                    boards[j] = scanner.nextInt();
+                }
+                System.out.println(partition(boards, n, k));
+            }
+        }
+    }
 }
