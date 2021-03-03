@@ -1,9 +1,6 @@
 package SecondExercise;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Problem0202 {
     /*
@@ -27,14 +24,18 @@ public class Problem0202 {
      * @param bfsList 遍历结果
      */
     public static void bfs(int startIndex, int[][] graph, boolean[] isVisited, List<Integer> bfsList) {
-        if (bfsList.size() >= graph.length) return;
-        if (isVisited[startIndex]) return;
-        //未遍历完，且当前节点未访问
         isVisited[startIndex] = true;
         bfsList.add(startIndex);
-        for (int i = 0; i < graph[startIndex].length; i++) {
-            if (graph[startIndex][i] == 1) {
-                bfs(i, graph, isVisited, bfsList);
+        Queue<Integer> queue = new PriorityQueue<>();
+        queue.offer(startIndex);
+        while (!queue.isEmpty()) {
+            int index = queue.poll();
+            for (int i = 0; i < graph[index].length; i++) {
+                if (!isVisited[i] && graph[index][i] == 1) {
+                    isVisited[i] = true;
+                    queue.offer(i);
+                    bfsList.add(i);
+                }
             }
         }
     }
