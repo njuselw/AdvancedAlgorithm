@@ -1,5 +1,7 @@
 package SecondExercise;
 
+import java.util.Scanner;
+
 public class Problem0202 {
     /*
     广度优先遍历图
@@ -13,4 +15,12 @@ public class Problem0202 {
     Output
     输出遍历顺序，用空格隔开
      */
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int T = scanner.nextInt();
+        for (int i = 0; i < T; i++) {
+
+        }
+    }
 }
