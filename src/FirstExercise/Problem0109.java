@@ -125,18 +125,28 @@ public class Problem0109 {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int T = Integer.parseInt(scanner.nextLine());
+        int T = scanner.nextInt();
         for (int i = 0; i < T; i++) {
-            int N = Integer.parseInt(scanner.nextLine());
-            String[] points_str = scanner.nextLine().split(" ");
+            int N = scanner.nextInt();
+            Point[] points = new Point[N];
+            for (int j = 0; j < N; j++) {
+                int x = scanner.nextInt();
+                int y = scanner.nextInt();
+                points[j] = new Point(String.valueOf(x), String.valueOf(y));
+            }
             if (N == 0) {
                 System.out.println(-1);
                 continue;
             }
-            Point[] points = new Point[N];
-            for (int j = 0; j < N; j++) {
-                points[j] = new Point(points_str[2 * j], points_str[2 * j + 1]);
-            }
+//            String[] points_str = scanner.nextLine().split(" ");
+//            if (N == 0) {
+//                System.out.println(-1);
+//                continue;
+//            }
+//            Point[] points = new Point[N];
+//            for (int j = 0; j < N; j++) {
+//                points[j] = new Point(points_str[2 * j], points_str[2 * j + 1]);
+//            }
             Arrays.sort(points);
             List<Point> convexHull = getConvexHull(points);
             if (convexHull.size() <= 2) {
