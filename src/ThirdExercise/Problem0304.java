@@ -26,6 +26,8 @@ public class Problem0304 {
         Scanner scanner = new Scanner(System.in);
         int t = Integer.parseInt(scanner.nextLine());
         for (int i = 0; i < t; i++) {
+            int n = Integer.parseInt(scanner.nextLine());
+            String[] strings = scanner.nextLine().split(" ");
 
         }
     }

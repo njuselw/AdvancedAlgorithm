@@ -31,18 +31,23 @@ public class Problem0303 {
             }
         }
         int res = 0;
-        //纵向遍历，若cnt[i][j] ~ cnt[i][k]均>0，则构成举行大小为 (k - j + 1) * min(cnt[i][j]...cnt[i][k])
         for (int i = 0; i < m; i++) {
-            int min = Integer.MAX_VALUE, notZero = 0;
             for (int j = 0; j < n; j++) {
                 if (cnt[j][i] == 0) {
-                    min = Integer.MAX_VALUE;
-                    notZero = 0;
-                } else {
-                    min = Math.min(min, cnt[j][i]);
-                    notZero++;
-                    res = Math.max(res, min * notZero);
+                    continue;
                 }
+                int count = 0;
+                int down = 0;
+                while (j + down < n && cnt[j][i] <= cnt[j + down][i]) {
+                    count++;
+                    down++;
+                }
+                int up = 0;
+                while (j - up >= 0 && cnt[j][i] <= cnt[j - up][i]) {
+                    count++;
+                    up++;
+                }
+                res = Math.max(res, cnt[j][i] * (count - 1));
             }
         }
         return res;
