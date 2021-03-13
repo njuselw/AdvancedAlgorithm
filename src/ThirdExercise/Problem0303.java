@@ -31,19 +31,19 @@ public class Problem0303 {
             }
         }
         int res = 0;
-        //纵向遍历，如果cnt[i][j] == cnt[i - 1][j]，则能够构成 2 * cnt[i][j] 大小的矩形
+        //纵向遍历，若cnt[i][j] ~ cnt[i][k]均>0，则构成举行大小为 (k - j + 1) * min(cnt[i][j]...cnt[i][k])
         for (int i = 0; i < m; i++) {
-            int area = 0, pre = 0;
+            int min = Integer.MAX_VALUE, notZero = 0;
             for (int j = 0; j < n; j++) {
-                if (cnt[j][i] == 0 || cnt[j][i] != pre) {
-                    res = Math.max(res, area);
-                    area = cnt[j][i];
-                    pre = cnt[j][i];
+                if (cnt[j][i] == 0) {
+                    min = Integer.MAX_VALUE;
+                    notZero = 0;
                 } else {
-                    area += cnt[j][i];
+                    min = Math.min(min, cnt[j][i]);
+                    notZero++;
+                    res = Math.max(res, min * notZero);
                 }
             }
-            res = Math.max(res, area);
         }
         return res;
     }

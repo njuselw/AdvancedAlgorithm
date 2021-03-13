@@ -1,5 +1,7 @@
 package ThirdExercise;
 
+import java.util.Scanner;
+
 public class Problem0304 {
     /*
     能否成环
@@ -19,4 +21,12 @@ public class Problem0304 {
     Output
     If chain can be formed, then print 1, else print 0.
      */
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int t = Integer.parseInt(scanner.nextLine());
+        for (int i = 0; i < t; i++) {
+
+        }
+    }
 }
