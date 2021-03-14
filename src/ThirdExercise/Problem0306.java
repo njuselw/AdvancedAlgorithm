@@ -1,5 +1,7 @@
 package ThirdExercise;
 
+import java.util.Scanner;
+
 public class Problem0306 {
     /*
     牛的繁殖问题
@@ -20,4 +22,39 @@ public class Problem0306 {
     Output
     For each test case print in new line the number of animals expected at the end of N years modulo 10^9 + 7.
      */
+
+    //这题不就是斐波那契数列
+    //矩阵快速幂的方式（动态规划的方式会超时）
+    //参考链接：https://leetcode-cn.com/problems/climbing-stairs/solution/pa-lou-ti-by-leetcode-solution/
+    public static long getNumOfAnimals(long n) {
+        long[][] q = {{1, 1}, {1, 0}};
+        long[][] res = {{1, 0}, {0, 1}};
+        while (n > 0) {
+            if ((n & 1) == 1) {
+                res = multiply(res, q);
+            }
+            n >>= 1;
+            q = multiply(q, q);
+        }
+        return res[0][0] % 1000000007;
+    }
+
+    public static long[][] multiply(long[][] a, long[][] b) {
+        long[][] c = new long[2][2];
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                c[i][j] = (a[i][0] * b[0][j] + a[i][1] * b[1][j]) % 1000000007;
+            }
+        }
+        return c;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int t = Integer.parseInt(scanner.nextLine());
+        for (int i = 0; i < t; i++) {
+            long n = Long.parseLong(scanner.nextLine());
+            System.out.println(getNumOfAnimals(n));
+        }
+    }
 }
