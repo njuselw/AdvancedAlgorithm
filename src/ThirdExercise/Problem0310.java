@@ -1,5 +1,7 @@
 package ThirdExercise;
 
+import java.util.Scanner;
+
 public class Problem0310 {
     /*
     整除查询
@@ -16,4 +18,38 @@ public class Problem0310 {
     Output
     For each test case,In new line print the required count for each query Q[i].
      */
+
+    public static int[] getRes(int[] a, int[] q) {
+        int[] res = new int[q.length];
+        for (int i = 0; i < q.length; i++) {
+            for (int j = 0; j < a.length; j++) {
+                if (a[j] % q[i] == 0) {
+                    res[i]++;
+                }
+            }
+        }
+        return res;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int t = scanner.nextInt();
+        for (int i = 0; i < t; i++) {
+            int n = scanner.nextInt();
+            int m = scanner.nextInt();
+            int[] a = new int[n];
+            int[] q = new int[m];
+            for (int j = 0; j < n; j++) {
+                a[j] = scanner.nextInt();
+            }
+            for (int j = 0; j < m; j++) {
+                q[j] = scanner.nextInt();
+            }
+            int[] res = getRes(a, q);
+            for (int j = 0; j < res.length - 1; j++) {
+                System.out.print(res[j] + " ");
+            }
+            System.out.println(res[res.length - 1]);
+        }
+    }
 }
