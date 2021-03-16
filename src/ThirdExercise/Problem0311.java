@@ -1,5 +1,7 @@
 package ThirdExercise;
 
+import java.util.Scanner;
+
 public class Problem0311 {
     /*
     对称子字符串
@@ -13,4 +15,36 @@ public class Problem0311 {
     Output
     输出找到的满足要求的最长子串的长度。例如，给定的例子长度应该是 6。每行对应一个用例的结果。
      */
+
+    public static int getMaxSubLength(String s) {
+        int[] nums = new int[s.length()];
+        for (int i = 0; i < s.length(); i++) {
+            nums[i] = s.charAt(i) - '0';
+        }
+        int maxLen = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int leftSum = 0, rightSum = 0;
+            int left = i, right = i + 1;
+            //两边扩散
+            while (left >= 0 && right < s.length()) {
+                leftSum += nums[left];
+                rightSum += nums[right];
+                if (leftSum == rightSum) {
+                    maxLen = Math.max(maxLen, right - left + 1);
+                }
+                left--;
+                right++;
+            }
+        }
+        return maxLen;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int t = Integer.parseInt(scanner.nextLine());
+        for (int i = 0; i < t; i++) {
+            String s = scanner.nextLine();
+            System.out.println(getMaxSubLength(s));
+        }
+    }
 }
