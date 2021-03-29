@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Scanner;
 
-public class Problem0502 {
+public class Problem0510 {
     /*
     数组和窗口
     Description
