@@ -32,7 +32,7 @@ public class Problem0507 {
     }
 
     //动态规划，参考博客：https://blog.csdn.net/qq_33935895/article/details/103029767
-    //将num1和num2数组合并，将问题转化为从2n的数组中，取出n个数，是的这些数之和不超过sum/2+2且最大
+    //将num1和num2数组合并，将问题转化为从2n的数组中，取出n个数，是的这些数之和不超过sum/2且最大
     public static int getRes(int[] num1, int[] num2) {
         int n = num1.length;
         int[] arr = new int[2 * n];
