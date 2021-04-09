@@ -1,5 +1,9 @@
 package FifthExercise;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class Problem0506 {
     /*
     管道网络
@@ -19,4 +23,44 @@ public class Problem0506 {
     For each test case, the output is the number of pairs of tanks and taps installed
     i.e n followed by n lines that contain three integers: house number of tank, house number of tap and the minimum diameter of pipe between them.
      */
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int t = scanner.nextInt();
+        for (int i= 0; i < t; i++) {
+            int n = scanner.nextInt();
+            int p = scanner.nextInt();
+            int[] link = new int[n + 1]; //link[i]表示房屋i的管道所连接的房屋
+            int[] val = new int[n + 1]; //val[i]表示以房屋i为起点的管道长度
+            int[] degree = new int[n + 1]; //记录入度，目的是获得所有起点管道
+            for (int j = 0; j < p; j++) {
+                int x = scanner.nextInt();
+                int y = scanner.nextInt();
+                int v = scanner.nextInt();
+                link[x] = y;
+                val[x] = v;
+                degree[y]++;
+            }
+            List<Integer> list = new ArrayList<>();
+            for (int j = 1; j <= n; j++) {
+                if (degree[j] == 0) {
+                    list.add(j);
+                }
+            }
+            List<String> res = new ArrayList<>();
+            for (Integer start: list) {
+                int end = link[start];
+                int minVal = val[start];
+                while (link[end] != 0) {
+                    minVal = Math.min(minVal, val[end]);
+                    end = link[end];
+                }
+                res.add(start + " " + end + " " + minVal);
+            }
+            System.out.println(res.size());
+            for (String s: res) {
+                System.out.println(s);
+            }
+        }
+    }
 }
